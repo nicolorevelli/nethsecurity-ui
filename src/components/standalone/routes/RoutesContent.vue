@@ -84,7 +84,6 @@ async function loadRoutes() {
 
     routes.value = items
   } catch (err: any) {
-    console.error(err)
     error.value.notificationTitle = t('error.cannot_load_routes')
     error.value.notificationDescription = t(getAxiosErrorMessage(err))
   }
@@ -101,7 +100,6 @@ async function loadMainTable() {
 
     if (res.data) table.value = res.data.table
   } catch (err: any) {
-    console.error(err)
     error.value.notificationTitle = t('error.cannot_load_routes')
     error.value.notificationDescription = t(getAxiosErrorMessage(err))
   }
@@ -159,7 +157,10 @@ function scrollToMainTable() {
 
 <template>
   <NeSkeleton v-if="loading" :lines="15" />
-  <HorizontalCard v-if="!loading && !routes.length" class="space-y-4 text-center">
+  <HorizontalCard
+    v-if="!loading && !error.notificationTitle && !routes.length"
+    class="space-y-4 text-center"
+  >
     <p>{{ t('standalone.routes.no_route_found') }}</p>
     <NeButton :kind="'primary'" @click="openCreateRoute()">
       <template #prefix>
